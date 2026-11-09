@@ -1,0 +1,342 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de citas | TecnoTaller</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
+            background: #C3C9CF;
+            color: #263238;
+        }
+
+        header {
+            background: #1F4E79;
+            color: white;
+            padding: 22px 30px;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 25px;
+        }
+
+        header p {
+            margin: 5px 0 0;
+            font-size: 14px;
+        }
+
+        .contenedor {
+            width: min(1150px, 94%);
+            margin: 30px auto;
+        }
+
+        .acciones {
+            margin-bottom: 20px;
+        }
+
+        .volver {
+            color: #1F4E79;
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        .tarjeta {
+            background: white;
+            padding: 25px;
+            border-radius: 18px;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+        }
+
+        h2 {
+            margin-top: 0;
+            color: #1F4E79;
+            font-size: 21px;
+        }
+
+        .formulario {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 17px;
+        }
+
+        .campo {
+            display: flex;
+            flex-direction: column;
+            gap: 7px;
+        }
+
+        .campo.completo {
+            grid-column: 1 / -1;
+        }
+
+        label {
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 11px 12px;
+            border: 1px solid #D1D7DC;
+            border-radius: 9px;
+            font: inherit;
+            font-size: 14px;
+            background: white;
+        }
+
+        textarea {
+            min-height: 85px;
+            resize: vertical;
+        }
+
+        button {
+            background: #1F4E79;
+            color: white;
+            border: none;
+            border-radius: 9px;
+            padding: 12px 20px;
+            font: inherit;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #173B5C;
+        }
+
+        .mensaje {
+            padding: 12px 15px;
+            margin-bottom: 20px;
+            border-radius: 9px;
+            background: #EAF1F7;
+            color: #1F4E79;
+            font-size: 14px;
+        }
+
+        .tabla-contenedor {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+            min-width: 850px;
+        }
+
+        th, td {
+            padding: 12px 10px;
+            text-align: left;
+            border-bottom: 1px solid #E6E9EC;
+        }
+
+        th {
+            background: #F5F7FA;
+            color: #1F4E79;
+        }
+
+        .estado {
+            display: inline-block;
+            padding: 5px 9px;
+            border-radius: 20px;
+            background: #EAF1F7;
+            color: #1F4E79;
+            font-size: 11px;
+            white-space: nowrap;
+        }
+
+        .vacio {
+            text-align: center;
+            padding: 25px;
+            color: #687782;
+        }
+
+        @media (max-width: 650px) {
+            header {
+                padding: 20px;
+            }
+
+            .tarjeta {
+                padding: 18px;
+            }
+
+            .formulario {
+                grid-template-columns: 1fr;
+            }
+
+            .campo.completo {
+                grid-column: auto;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>Gestión de citas</h1>
+        <p>Programa y consulta las citas de servicio del taller.</p>
+    </header>
+
+    <main class="contenedor">
+        <div class="acciones">
+            <a class="volver" href="{{ url_for('panel') }}">← Volver al panel principal</a>
+        </div>
+
+        {% if mensaje %}
+            <div class="mensaje">{{ mensaje }}</div>
+        {% endif %}
+
+        <section class="tarjeta">
+            <h2>Registrar nueva cita</h2>
+
+            <form method="POST" class="formulario">
+                <div class="campo">
+                    <label for="id_cliente">Cliente *</label>
+                    <select name="id_cliente" id="id_cliente" required>
+                        <option value="">Selecciona un cliente</option>
+                        {% for cliente in clientes %}
+                            <option value="{{ cliente.id_cliente }}">
+                                {{ cliente.nombre }} - {{ cliente.documento }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="campo">
+                    <label for="id_vehiculo">Vehículo *</label>
+                    <select name="id_vehiculo" id="id_vehiculo" required>
+                        <option value="">Selecciona un vehículo</option>
+                        {% for vehiculo in vehiculos %}
+                            <option value="{{ vehiculo.id_vehiculo }}"
+                                    data-cliente="{{ vehiculo.id_cliente }}">
+                                {{ vehiculo.placa }} - {{ vehiculo.marca }} {{ vehiculo.modelo }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="campo">
+                    <label for="id_mecanico">Mecánico</label>
+                    <select name="id_mecanico" id="id_mecanico">
+                        <option value="">Sin asignar por ahora</option>
+                        {% for mecanico in mecanicos %}
+                            <option value="{{ mecanico.id_mecanico }}">
+                                {{ mecanico.nombre }}
+                                {% if mecanico.especialidad %}
+                                    - {{ mecanico.especialidad }}
+                                {% endif %}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="campo">
+                    <label for="motivo">Motivo de la cita</label>
+                    <input type="text" id="motivo" name="motivo"
+                           maxlength="255"
+                           placeholder="Ej. mantenimiento preventivo">
+                </div>
+
+                <div class="campo">
+                    <label for="fecha">Fecha *</label>
+                    <input type="date" id="fecha" name="fecha" required>
+                </div>
+
+                <div class="campo">
+                    <label for="hora">Hora *</label>
+                    <input type="time" id="hora" name="hora" required>
+                </div>
+
+                <div class="campo completo">
+                    <label for="observaciones">Observaciones</label>
+                    <textarea id="observaciones" name="observaciones"
+                              placeholder="Detalles adicionales de la cita"></textarea>
+                </div>
+
+                <div class="campo completo">
+                    <button type="submit">Registrar cita</button>
+                </div>
+            </form>
+        </section>
+
+        <section class="tarjeta">
+            <h2>Citas registradas</h2>
+
+            <div class="tabla-contenedor">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Fecha</th>
+                            <th>Hora</th>
+                            <th>Cliente</th>
+                            <th>Vehículo</th>
+                            <th>Mecánico</th>
+                            <th>Motivo</th>
+                            <th>Estado</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        {% for cita in citas %}
+                            <tr>
+                                <td>{{ cita.fecha.strftime('%d/%m/%Y') }}</td>
+                                <td>{{ cita.hora }}</td>
+                                <td>{{ cita.nombre_cliente }}</td>
+                                <td>{{ cita.placa }} - {{ cita.marca }} {{ cita.modelo }}</td>
+                                <td>{{ cita.nombre_mecanico or 'Sin asignar' }}</td>
+                                <td>{{ cita.motivo or 'Sin especificar' }}</td>
+                                <td><span class="estado">{{ cita.estado.replace('_', ' ') }}</span></td>
+                            </tr>
+                        {% else %}
+                            <tr>
+                                <td colspan="7" class="vacio">
+                                    Todavía no hay citas registradas.
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        const clienteSelect = document.getElementById('id_cliente');
+        const vehiculoSelect = document.getElementById('id_vehiculo');
+
+        function filtrarVehiculos() {
+            const clienteSeleccionado = clienteSelect.value;
+
+            Array.from(vehiculoSelect.options).forEach(opcion => {
+                if (!opcion.value) {
+                    opcion.hidden = false;
+                    return;
+                }
+
+                opcion.hidden =
+                    clienteSeleccionado !== '' &&
+                    opcion.dataset.cliente !== clienteSeleccionado;
+
+                if (opcion.hidden && opcion.selected) {
+                    vehiculoSelect.value = '';
+                }
+            });
+        }
+
+        clienteSelect.addEventListener('change', filtrarVehiculos);
+        filtrarVehiculos();
+    </script>
+</body>
+</html>

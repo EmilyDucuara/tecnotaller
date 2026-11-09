@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Crear cuenta | TecnoTaller</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 30px 16px;
+            background: #C3C9CF;
+            font-family: 'Poppins', sans-serif;
+            color: #263746;
+        }
+
+        .registro-contenedor {
+            width: 100%;
+            max-width: 500px;
+            padding: 38px;
+            background: #FFFFFF;
+            border-radius: 25px;
+            box-shadow: 0 10px 35px rgba(31, 78, 121, 0.12);
+        }
+
+        .registro-logo {
+            text-align: center;
+            margin-bottom: 22px;
+        }
+
+        .registro-logo img {
+            max-width: 150px;
+            max-height: 75px;
+            object-fit: contain;
+        }
+
+        .registro-icono {
+            width: 65px;
+            height: 65px;
+            margin: 0 auto 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 18px;
+            background: #F5F7FA;
+            color: #1F4E79;
+            font-size: 28px;
+        }
+
+        h1 {
+            margin: 0 0 8px;
+            color: #1F4E79;
+            text-align: center;
+            font-size: 28px;
+            font-weight: 700;
+        }
+
+        .registro-descripcion {
+            margin: 0 0 25px;
+            color: #66727D;
+            text-align: center;
+            font-size: 14px;
+            line-height: 1.7;
+        }
+
+        .aviso-invitacion {
+            padding: 13px 15px;
+            margin-bottom: 22px;
+            border-left: 4px solid #1F4E79;
+            border-radius: 8px;
+            background: #F5F7FA;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        .campo {
+            margin-bottom: 18px;
+        }
+
+        .campo label {
+            display: block;
+            margin-bottom: 7px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .campo input {
+            width: 100%;
+            padding: 13px 14px;
+            border: 1px solid #D5DCE3;
+            border-radius: 10px;
+            outline: none;
+            font-family: inherit;
+            font-size: 14px;
+            transition: border-color 0.3s ease;
+        }
+
+        .campo input:focus {
+            border-color: #1F4E79;
+            box-shadow: 0 0 0 3px rgba(31, 78, 121, 0.10);
+        }
+
+        .campo small {
+            display: block;
+            margin-top: 6px;
+            color: #66727D;
+            font-size: 12px;
+        }
+
+        .btn-registro {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 10px;
+            background: #1F4E79;
+            color: #FFFFFF;
+            font-family: inherit;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .btn-registro:hover {
+            background: #173B5C;
+        }
+
+        .mensaje {
+            margin-bottom: 18px;
+            padding: 12px;
+            border-radius: 8px;
+            background: #F5F7FA;
+            color: #1F4E79;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        .registro-enlaces {
+            margin-top: 22px;
+            text-align: center;
+            font-size: 13px;
+            line-height: 2;
+        }
+
+        .registro-enlaces a {
+            color: #1F4E79;
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        .registro-enlaces a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 480px) {
+            .registro-contenedor {
+                padding: 26px 20px;
+                border-radius: 18px;
+            }
+
+            h1 {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <main class="registro-contenedor">
+
+        <div class="registro-logo">
+            <img
+                src="{{ url_for('static', filename='img/logo.png') }}"
+                alt="Logo TecnoTaller"
+                onerror="this.style.display='none'">
+        </div>
+
+        <div class="registro-icono" aria-hidden="true">
+            <span>+</span>
+        </div>
+
+        <h1>Crear cuenta</h1>
+
+        <p class="registro-descripcion">
+            Completa tus datos para comenzar a utilizar TecnoTaller.
+        </p>
+
+
+        {% if error %}
+            <div class="mensaje" role="alert">{{ error }}</div>
+        {% endif %}
+
+        {% if mensaje %}
+            <div class="mensaje" role="status">{{ mensaje }}</div>
+        {% endif %}
+
+        <form method="POST" action="{{ url_for('registro') }}">
+
+            <div class="campo">
+                <label for="nombre">Nombre completo</label>
+                <input
+                    type="text"
+                    id="nombre"
+                    name="nombre"
+                    placeholder="Escribe tu nombre completo"
+                    maxlength="100"
+                    autocomplete="name"
+                    required>
+            </div>
+
+            <div class="campo">
+                <label for="correo">Correo electrónico</label>
+                <input
+                    type="email"
+                    id="correo"
+                    name="correo"
+                    placeholder="ejemplo@correo.com"
+                    maxlength="150"
+                    autocomplete="email"
+                    required>
+            </div>
+
+        <div class="campo">
+    <label for="id_taller">Seleccionar taller</label>
+    <select id="id_taller" name="id_taller" required>
+        <option value="">Selecciona un taller</option>
+
+        {% for taller in talleres %}
+            <option value="{{ taller.id_taller }}">
+                {{ taller.nombre }}
+            </option>
+        {% endfor %}
+    </select>
+</div>
+
+            <div class="campo">
+                <label for="contrasena">Crear contraseña</label>
+                <input
+                    type="password"
+                    id="contrasena"
+                    name="contrasena"
+                    placeholder="Mínimo 8 caracteres"
+                    minlength="8"
+                    autocomplete="new-password"
+                    required>
+                <small>Utiliza al menos 8 caracteres.</small>
+            </div>
+
+            <div class="campo">
+                <label for="confirmar_contrasena">Confirmar contraseña</label>
+                <input
+                    type="password"
+                    id="confirmar_contrasena"
+                    name="confirmar_contrasena"
+                    placeholder="Escribe nuevamente tu contraseña"
+                    minlength="8"
+                    autocomplete="new-password"
+                    required>
+            </div>
+
+            <button type="submit" class="btn-registro">
+                Crear mi cuenta
+            </button>
+
+        </form>
+
+        <div class="registro-enlaces">
+            ¿Ya tienes una cuenta?
+            <a href="{{ url_for('login') }}">Iniciar sesión</a>
+            <br>
+            <a href="{{ url_for('inicio') }}">Volver al inicio</a>
+        </div>
+
+    </main>
+
+</body>
+</html>

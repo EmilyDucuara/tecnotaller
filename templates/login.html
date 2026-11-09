@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Iniciar sesión | TecnoTaller</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"
+        rel="stylesheet"
+    >
+
+    <style>
+        .login-page {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 30px 20px;
+            background: var(--fondo, #f6f8fb);
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .login-card {
+            width: 100%;
+            max-width: 430px;
+            padding: 40px 32px;
+            background: #ffffff;
+            border-radius: 18px;
+            box-shadow: 0 10px 35px rgba(11, 43, 80, 0.12);
+        }
+
+        .login-logo {
+            display: block;
+            width: 180px;
+            max-width: 100%;
+            height: auto;
+            margin: 0 auto 25px;
+        }
+
+        .login-card h1 {
+            margin: 0 0 10px;
+            color: var(--azul-oscuro, #0b2b50);
+            text-align: center;
+            font-size: 27px;
+        }
+
+        .login-description {
+            margin: 0 0 28px;
+            color: var(--texto-suave, #647182);
+            text-align: center;
+            font-size: 14px;
+        }
+
+        .login-form label {
+            display: block;
+            margin-bottom: 7px;
+            color: var(--texto, #263445);
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .login-form input {
+            width: 100%;
+            padding: 13px 14px;
+            margin-bottom: 18px;
+            border: 1px solid var(--borde, #dce4ec);
+            border-radius: 8px;
+            font: inherit;
+            font-size: 14px;
+            box-sizing: border-box;
+        }
+
+        .login-form input:focus {
+            outline: 2px solid #2d70ad;
+            outline-offset: 1px;
+        }
+
+        .password-container {
+            position: relative;
+        }
+
+        .password-container input {
+            padding-right: 75px;
+        }
+
+        .toggle-password {
+            position: absolute;
+            right: 10px;
+            top: 12px;
+            border: none;
+            background: transparent;
+            color: var(--azul, #1F4E79);
+            font: inherit;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .login-submit {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 8px;
+            background: var(--azul, #1F4E79);
+            color: #ffffff;
+            font: inherit;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .login-submit:hover {
+            background: var(--azul-claro, #2d70ad);
+        }
+
+        .login-message {
+            display: none;
+            margin: 0 0 18px;
+            padding: 12px;
+            border-radius: 8px;
+            background: #fff0f0;
+            color: #a32121;
+            font-size: 13px;
+        }
+
+        .login-links {
+            margin-top: 24px;
+            text-align: center;
+            font-size: 13px;
+            line-height: 2;
+        }
+
+        .login-links a {
+            color: var(--azul, #1F4E79);
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        .login-links a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 480px) {
+            .login-card {
+                padding: 30px 22px;
+            }
+
+            .login-card h1 {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <main class="login-page">
+        <section class="login-card">
+
+            <a href="{{ url_for('inicio') }}" aria-label="Volver a TecnoTaller">
+                <img
+                    src="{{ url_for('static', filename='img/logo.png') }}"
+                    alt="Logo de TecnoTaller"
+                    class="login-logo"
+                >
+            </a>
+
+            <h1>¡Bienvenido de nuevo!</h1>
+
+            <p class="login-description">
+                Ingresa tus datos para continuar en TecnoTaller.
+            </p>
+
+            <form class="login-form" id="login-form" method="POST" action="{{ url_for('login') }}">
+
+              {% if error %}
+<p class="login-message" id="login-message" role="alert"
+   style="display: block;">
+    {{ error }}
+</p>
+{% else %}
+<p class="login-message" id="login-message" role="alert"></p>
+{% endif %}
+
+                <label for="correo">Correo electrónico</label>
+
+                <input
+                    type="email"
+                    id="correo"
+                    name="correo"
+                    placeholder="ejemplo@correo.com"
+                    autocomplete="email"
+                    required
+                >
+
+                <label for="contrasena">Contraseña</label>
+
+                <div class="password-container">
+                    <input
+                        type="password"
+                        id="contrasena"
+                        name="contrasena"
+                        placeholder="Ingresa tu contraseña"
+                        autocomplete="current-password"
+                
+                    >
+
+                    <button
+                        type="button"
+                        class="toggle-password"
+                        id="toggle-password"
+                        aria-controls="contrasena"
+                        aria-pressed="false"
+                    >
+                        Mostrar
+                    </button>
+                </div>
+
+                <button type="submit" class="login-submit">
+                    Iniciar sesión
+                </button>
+
+            </form>
+
+            <div class="login-links">
+                ¿Todavía no tienes una cuenta?
+                <a href="{{ url_for('registro') }}">Regístrate aquí</a>
+
+                <br>
+
+                <a href="{{ url_for('inicio') }}">← Volver a TecnoTaller</a>
+            </div>
+
+        </section>
+    </main>
+
+   
+<script>
+    const formulario = document.getElementById("login-form");
+    const correo = document.getElementById("correo");
+    const contrasena = document.getElementById("contrasena");
+    const mensaje = document.getElementById("login-message");
+    const botonMostrar = document.getElementById("toggle-password");
+
+    botonMostrar.addEventListener("click", () => {
+        const mostrar = contrasena.type === "password";
+
+        contrasena.type = mostrar ? "text" : "password";
+        botonMostrar.textContent = mostrar ? "Ocultar" : "Mostrar";
+        botonMostrar.setAttribute("aria-pressed", String(mostrar));
+    });
+
+    
+formulario.addEventListener("submit", (evento) => {
+    mensaje.style.display = "none";
+    mensaje.textContent = "";
+
+    if (!correo.value.trim()) {
+        evento.preventDefault();
+        mensaje.textContent = "Por favor, ingresa tu correo electrónico.";
+        mensaje.style.display = "block";
+        correo.focus();
+        return;
+    }
+
+    if (!correo.validity.valid) {
+        evento.preventDefault();
+        mensaje.textContent = "Ingresa un correo electrónico válido.";
+        mensaje.style.display = "block";
+        correo.focus();
+        return;
+    }
+
+    // La contraseña puede quedar vacía en el formulario.
+    // Flask decide si la cuenta puede ingresar sin contraseña.
+});
+
+</script>
+
+
+</body>
+</html>

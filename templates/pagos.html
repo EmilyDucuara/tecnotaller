@@ -1,0 +1,279 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de pagos | TecnoTaller</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
+            background: #C3C9CF;
+            color: #263238;
+        }
+
+        header {
+            background: #1F4E79;
+            color: white;
+            padding: 22px 30px;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 25px;
+        }
+
+        header p {
+            margin: 5px 0 0;
+            font-size: 14px;
+        }
+
+        .contenedor {
+            width: min(1150px, 94%);
+            margin: 30px auto;
+        }
+
+        .volver {
+            display: inline-block;
+            margin-bottom: 20px;
+            color: #1F4E79;
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        .tarjeta {
+            background: white;
+            padding: 25px;
+            border-radius: 18px;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+        }
+
+        h2 {
+            margin-top: 0;
+            color: #1F4E79;
+            font-size: 21px;
+        }
+
+        .formulario {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 17px;
+        }
+
+        .campo {
+            display: flex;
+            flex-direction: column;
+            gap: 7px;
+        }
+
+        .completo {
+            grid-column: 1 / -1;
+        }
+
+        label {
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 11px 12px;
+            border: 1px solid #D1D7DC;
+            border-radius: 9px;
+            font: inherit;
+            font-size: 14px;
+            background: white;
+        }
+
+        button {
+            background: #1F4E79;
+            color: white;
+            border: none;
+            border-radius: 9px;
+            padding: 12px 20px;
+            font: inherit;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #173B5C;
+        }
+
+        .mensaje {
+            padding: 12px 15px;
+            margin-bottom: 20px;
+            border-radius: 9px;
+            background: #EAF1F7;
+            color: #1F4E79;
+            font-size: 14px;
+        }
+
+        .tabla-contenedor {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            min-width: 750px;
+            border-collapse: collapse;
+            font-size: 13px;
+        }
+
+        th, td {
+            padding: 12px 10px;
+            text-align: left;
+            border-bottom: 1px solid #E6E9EC;
+        }
+
+        th {
+            background: #F5F7FA;
+            color: #1F4E79;
+        }
+
+        .estado {
+            display: inline-block;
+            padding: 5px 9px;
+            border-radius: 20px;
+            background: #EAF1F7;
+            color: #1F4E79;
+            font-size: 11px;
+        }
+
+        .vacio {
+            text-align: center;
+            padding: 25px;
+            color: #687782;
+        }
+
+        @media (max-width: 650px) {
+            .tarjeta {
+                padding: 18px;
+            }
+
+            .formulario {
+                grid-template-columns: 1fr;
+            }
+
+            .completo {
+                grid-column: auto;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>Gestión de pagos</h1>
+        <p>Registro y consulta de pagos asociados a las órdenes de trabajo.</p>
+    </header>
+
+    <main class="contenedor">
+        <a class="volver" href="{{ url_for('panel') }}">
+            ← Volver al panel principal
+        </a>
+
+        {% if mensaje %}
+            <div class="mensaje">{{ mensaje }}</div>
+        {% endif %}
+
+        <section class="tarjeta">
+            <h2>Registrar pago</h2>
+
+            <form method="POST" class="formulario">
+                <div class="campo">
+                    <label for="id_orden">Orden de trabajo *</label>
+                    <select name="id_orden" id="id_orden" required>
+                        <option value="">Selecciona una orden</option>
+                        {% for orden in ordenes %}
+                            <option value="{{ orden.id_orden }}">
+                                {{ orden.codigo_orden }} — {{ orden.estado.replace('_', ' ') }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="campo">
+                    <label for="monto">Monto del pago (COP) *</label>
+                    <input type="number" id="monto" name="monto"
+                           min="0.01" step="0.01" required
+                           placeholder="Ej. 150000">
+                </div>
+
+                <div class="campo">
+                    <label for="metodo_pago">Método de pago *</label>
+                    <select name="metodo_pago" id="metodo_pago" required>
+                        <option value="">Selecciona un método</option>
+                        <option value="efectivo">Efectivo</option>
+                        <option value="transferencia">Transferencia</option>
+                        <option value="tarjeta">Tarjeta</option>
+                        <option value="otro">Otro</option>
+                    </select>
+                </div>
+
+                <div class="campo">
+                    <label for="referencia">Referencia</label>
+                    <input type="text" id="referencia" name="referencia"
+                           maxlength="100"
+                           placeholder="Número de transacción, si aplica">
+                </div>
+
+                <div class="campo completo">
+                    <button type="submit">Registrar pago</button>
+                </div>
+            </form>
+        </section>
+
+        <section class="tarjeta">
+            <h2>Pagos registrados</h2>
+
+            <div class="tabla-contenedor">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Fecha</th>
+                            <th>Orden</th>
+                            <th>Monto</th>
+                            <th>Método</th>
+                            <th>Referencia</th>
+                            <th>Estado</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        {% for pago in pagos %}
+                            <tr>
+                                <td>{{ pago.fecha.strftime('%d/%m/%Y %H:%M') }}</td>
+                                <td>{{ pago.codigo_orden }}</td>
+                                <td>$ {{ "{:,.2f}".format(pago.monto).replace(",", "X").replace(".", ",").replace("X", ".") }}</td>
+                                <td>{{ pago.metodo_pago.replace('_', ' ')|capitalize }}</td>
+                                <td>{{ pago.referencia or '—' }}</td>
+                                <td>
+                                    <span class="estado">
+                                        {{ pago.estado|capitalize }}
+                                    </span>
+                                </td>
+                            </tr>
+                        {% else %}
+                            <tr>
+                                <td colspan="6" class="vacio">
+                                    Todavía no hay pagos registrados.
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+</body>
+</html>

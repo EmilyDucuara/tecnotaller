@@ -1,0 +1,284 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Órdenes de trabajo | TecnoTaller</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #C3C9CF;
+            color: #263442;
+        }
+
+        header {
+            background: #1F4E79;
+            color: white;
+            padding: 18px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        header h1 { font-size: 24px; }
+        header p { font-size: 13px; }
+        header a { color: white; font-size: 13px; }
+
+        main {
+            max-width: 1200px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+
+        .tarjeta {
+            background: white;
+            padding: 25px;
+            border-radius: 16px;
+            margin-bottom: 24px;
+            box-shadow: 0 4px 14px rgba(0,0,0,.06);
+        }
+
+        h2 {
+            color: #1F4E79;
+            font-size: 21px;
+            margin-bottom: 18px;
+        }
+
+        .formulario {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 16px;
+        }
+
+        .campo {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .campo.completo { grid-column: 1 / -1; }
+
+        label { font-size: 13px; font-weight: 600; }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 11px;
+            border: 1px solid #ccd2d8;
+            border-radius: 8px;
+            font: inherit;
+            font-size: 13px;
+            background: white;
+        }
+
+        textarea { min-height: 90px; resize: vertical; }
+
+        button {
+            background: #1F4E79;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 12px 20px;
+            font: inherit;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        button:hover { background: #173b5c; }
+
+        .mensaje {
+            background: #e6f4ea;
+            color: #216e39;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            font-size: 13px;
+        }
+
+        .error {
+            background: #fde8e7;
+            color: #a12622;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            font-size: 13px;
+        }
+
+        .tabla-contenedor { overflow-x: auto; }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 850px;
+            font-size: 12px;
+        }
+
+        th, td {
+            padding: 12px 10px;
+            text-align: left;
+            border-bottom: 1px solid #e3e7eb;
+        }
+
+        th { background: #1F4E79; color: white; }
+
+        .estado {
+            display: inline-block;
+            background: #e8eef5;
+            color: #1F4E79;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 11px;
+        }
+
+        .vacio { color: #687582; font-size: 13px; }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            font-size: 12px;
+        }
+
+        @media (max-width: 650px) {
+            .formulario { grid-template-columns: 1fr; }
+            .campo.completo { grid-column: auto; }
+            .tarjeta { padding: 18px; }
+        }
+    </style>
+</head>
+
+<body>
+<header>
+    
+<div style="display: flex; align-items: center; gap: 12px;">
+    <img src="{{ url_for('static', filename='img/logo.png') }}" alt="Logo TecnoTaller" style="width: 30px !important; height: 30px !important; object-fit: contain;">
+
+    
+</div>
+
+<nav>
+    <a href="{{ url_for('panel') }}">Volver al panel</a>
+    &nbsp; | &nbsp;
+    <a href="{{ url_for('cerrar_sesion') }}">Cerrar sesión</a>
+</nav>
+</header>
+
+
+<main>
+    <section class="tarjeta">
+        <h2>Registrar orden de trabajo</h2>
+
+        {% if mensaje %}
+            <div class="mensaje">{{ mensaje }}</div>
+        {% endif %}
+
+        {% if error %}
+            <div class="error">{{ error }}</div>
+        {% endif %}
+
+        <form method="POST" class="formulario">
+            <div class="campo completo">
+                <label for="id_vehiculo">Vehículo *</label>
+                <select id="id_vehiculo" name="id_vehiculo" required>
+                    <option value="">Selecciona un vehículo</option>
+                    {% for v in vehiculos %}
+                    <option value="{{ v.id_vehiculo }}">
+                        {{ v.placa }} — {{ v.marca }} {{ v.modelo }} — {{ v.cliente }}
+                    </option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="campo">
+                <label for="id_mecanico">Mecánico asignado</label>
+                <select id="id_mecanico" name="id_mecanico">
+                    <option value="">Sin asignar por ahora</option>
+                    {% for m in mecanicos %}
+                    <option value="{{ m.id_mecanico }}">
+                        {{ m.nombre }}{% if m.especialidad %} — {{ m.especialidad }}{% endif %}
+                    </option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="campo">
+                <label for="estado">Estado de la orden *</label>
+                <select id="estado" name="estado" required>
+                    <option value="recibida">Recibida</option>
+                    <option value="diagnostico">En diagnóstico</option>
+                    <option value="en_reparacion">En reparación</option>
+                    <option value="esperando_repuesto">Esperando repuesto</option>
+                    <option value="finalizada">Finalizada</option>
+                    <option value="entregada">Entregada</option>
+                    <option value="cancelada">Cancelada</option>
+                </select>
+            </div>
+
+            <div class="campo">
+                <label for="kilometraje">Kilometraje</label>
+                <input type="number" id="kilometraje" name="kilometraje"
+                       min="0" placeholder="Ej. 45000">
+            </div>
+
+            <div class="campo completo">
+                <label for="observaciones">Observaciones del servicio</label>
+                <textarea id="observaciones" name="observaciones"
+                          placeholder="Describe el motivo de ingreso o el trabajo solicitado"></textarea>
+            </div>
+
+            <div class="campo completo">
+                <button type="submit">Registrar orden</button>
+            </div>
+        </form>
+    </section>
+
+    <section class="tarjeta">
+        <h2>Órdenes de trabajo registradas</h2>
+
+        {% if ordenes %}
+        <div class="tabla-contenedor">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Código</th>
+                        <th>Fecha de ingreso</th>
+                        <th>Cliente</th>
+                        <th>Vehículo</th>
+                        <th>Mecánico</th>
+                        <th>Estado</th>
+                        <th>Kilometraje</th>
+                        <th>Observaciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for o in ordenes %}
+                    <tr>
+                        <td>{{ o.codigo_orden }}</td>
+                        <td>{{ o.fecha_ingreso }}</td>
+                        <td>{{ o.cliente }}</td>
+                        <td>{{ o.placa }} — {{ o.marca }} {{ o.modelo }}</td>
+                        <td>{{ o.mecanico or 'Sin asignar' }}</td>
+                        <td><span class="estado">{{ o.estado | replace('_', ' ') | title }}</span></td>
+                        <td>{{ o.kilometraje if o.kilometraje is not none else '—' }}</td>
+                        <td>{{ o.observaciones or '—' }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+            <p class="vacio">Todavía no hay órdenes de trabajo registradas.</p>
+        {% endif %}
+    </section>
+</main>
+
+<footer>
+    TecnoTaller S.A.S. · Sistema de gestión de talleres automotrices
+</footer>
+</body>
+</html>

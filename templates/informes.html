@@ -1,0 +1,255 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Informes | TecnoTaller</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
+            background: #C3C9CF;
+            color: #263238;
+        }
+
+        header {
+            background: #1F4E79;
+            color: white;
+            padding: 22px 30px;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 25px;
+        }
+
+        header p {
+            margin: 5px 0 0;
+            font-size: 14px;
+        }
+
+        .contenedor {
+            width: min(1150px, 94%);
+            margin: 30px auto;
+        }
+
+        .volver {
+            display: inline-block;
+            margin-bottom: 20px;
+            color: #1F4E79;
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        .tarjeta {
+            background: white;
+            padding: 24px;
+            border-radius: 18px;
+            margin-bottom: 24px;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+        }
+
+        h2 {
+            margin-top: 0;
+            color: #1F4E79;
+            font-size: 20px;
+        }
+
+        .resumen {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+            gap: 18px;
+            margin-bottom: 24px;
+        }
+
+        .indicador {
+            background: white;
+            border-radius: 16px;
+            padding: 22px;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.07);
+        }
+
+        .indicador p {
+            margin: 0 0 10px;
+            font-size: 14px;
+            color: #596873;
+        }
+
+        .indicador strong {
+            display: block;
+            color: #1F4E79;
+            font-size: 27px;
+            overflow-wrap: anywhere;
+        }
+
+        .tabla-contenedor {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #E6E9EC;
+        }
+
+        th {
+            background: #F5F7FA;
+            color: #1F4E79;
+        }
+
+        .vacio {
+            text-align: center;
+            color: #687782;
+            padding: 20px;
+        }
+
+        .alerta {
+            color: #7A4B00;
+            font-weight: 600;
+        }
+
+        @media (max-width: 600px) {
+            header {
+                padding: 20px;
+            }
+
+            .tarjeta {
+                padding: 17px;
+            }
+        }
+
+        @media print {
+            body {
+                background: white;
+            }
+
+            .volver, .imprimir {
+                display: none;
+            }
+
+            .tarjeta, .indicador {
+                box-shadow: none;
+                border: 1px solid #ddd;
+                break-inside: avoid;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>Informes de TecnoTaller</h1>
+        <p>Resumen de la operación del taller.</p>
+    </header>
+
+    <main class="contenedor">
+        <a class="volver" href="{{ url_for('panel') }}">
+            ← Volver al panel principal
+        </a>
+
+        <section class="resumen">
+            <article class="indicador">
+                <p>Total de órdenes de trabajo</p>
+                <strong>{{ total_ordenes }}</strong>
+            </article>
+
+            <article class="indicador">
+                <p>Pagos registrados</p>
+                <strong>{{ total_pagos }}</strong>
+            </article>
+
+            <article class="indicador">
+                <p>Total de pagos aprobados</p>
+                <strong>$ {{ "{:,.2f}".format(total_recaudado).replace(",", "X").replace(".", ",").replace("X", ".") }}</strong>
+            </article>
+
+            <article class="indicador">
+                <p>Referencias de repuestos activos</p>
+                <strong>{{ total_repuestos }}</strong>
+            </article>
+        </section>
+
+        <section class="tarjeta">
+            <h2>Órdenes por estado</h2>
+
+            <div class="tabla-contenedor">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Estado</th>
+                            <th>Cantidad de órdenes</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        {% for item in ordenes_por_estado %}
+                            <tr>
+                                <td>{{ item.estado.replace('_', ' ')|capitalize }}</td>
+                                <td>{{ item.total }}</td>
+                            </tr>
+                        {% else %}
+                            <tr>
+                                <td colspan="2" class="vacio">
+                                    Todavía no hay órdenes registradas.
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section class="tarjeta">
+            <h2>Repuestos con existencias bajas</h2>
+
+            <div class="tabla-contenedor">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Código</th>
+                            <th>Repuesto</th>
+                            <th>Stock actual</th>
+                            <th>Stock mínimo</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        {% for repuesto in repuestos_bajos %}
+                            <tr>
+                                <td>{{ repuesto.codigo }}</td>
+                                <td>{{ repuesto.nombre }}</td>
+                                <td class="alerta">{{ repuesto.stock }}</td>
+                                <td>{{ repuesto.stock_minimo }}</td>
+                            </tr>
+                        {% else %}
+                            <tr>
+                                <td colspan="4" class="vacio">
+                                    No hay repuestos por debajo del nivel mínimo.
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <button class="imprimir" onclick="window.print()">
+            Imprimir o guardar informe en PDF
+        </button>
+    </main>
+</body>
+</html>

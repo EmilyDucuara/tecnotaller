@@ -1,0 +1,200 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inventario | TecnoTaller</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Poppins', sans-serif; background: #C3C9CF; color: #263442; }
+        header { background: #1F4E79; color: white; padding: 18px 5%; display: flex; justify-content: space-between; align-items: center; gap: 15px; flex-wrap: wrap; }
+        header h1 { font-size: 24px; }
+        header p, header a { font-size: 13px; }
+        header a { color: white; }
+        main { max-width: 1200px; margin: 30px auto; padding: 0 20px; }
+        .tarjeta { background: white; padding: 24px; border-radius: 16px; margin-bottom: 24px; box-shadow: 0 4px 14px #0000000d; }
+        h2 { color: #1F4E79; font-size: 21px; margin-bottom: 18px; }
+        h3 { color: #1F4E79; font-size: 16px; margin-bottom: 14px; }
+        .formularios { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; }
+        .campo { display: flex; flex-direction: column; gap: 6px; margin-bottom: 13px; }
+        label { font-size: 13px; font-weight: 600; }
+        input, select, textarea { width: 100%; padding: 10px; border: 1px solid #ccd2d8; border-radius: 8px; font: inherit; font-size: 13px; }
+        textarea { min-height: 70px; resize: vertical; }
+        button { background: #1F4E79; color: white; border: 0; border-radius: 8px; padding: 11px 17px; font: inherit; font-weight: 600; cursor: pointer; }
+        button:hover { background: #173b5c; }
+        .mensaje, .error { padding: 12px; border-radius: 8px; margin-bottom: 15px; font-size: 13px; }
+        .mensaje { background: #e6f4ea; color: #216e39; }
+        .error { background: #fde8e7; color: #a12622; }
+        .tabla { overflow-x: auto; }
+        table { width: 100%; border-collapse: collapse; min-width: 700px; font-size: 12px; }
+        th, td { padding: 11px 9px; text-align: left; border-bottom: 1px solid #e3e7eb; }
+        th { background: #1F4E79; color: white; }
+        .alerta { color: #a12622; font-weight: 700; }
+        .activo { color: #216e39; }
+        .inactivo { color: #a12622; }
+        .nota { font-size: 12px; color: #687582; margin-top: 10px; }
+        footer { text-align: center; padding: 22px; font-size: 12px; }
+        @media (max-width: 750px) { .formularios { grid-template-columns: 1fr; } .tarjeta { padding: 17px; } }
+    </style>
+</head>
+<body>
+<header>
+   
+<div class="encabezado-marca">
+    <img src="{{ url_for('static', filename='img/logo.png') }}" alt="Logo TecnoTaller" style="width: 30px !important; height: 30px !important; object-fit: contain;">
+
+    <div>
+    
+        <p>Inventario de repuestos</p>
+    </div>
+</div>
+
+<nav>
+    <a href="{{ url_for('panel') }}">Volver al panel</a>
+    &nbsp; | &nbsp;
+    <a href="{{ url_for('cerrar_sesion') }}">Cerrar sesión</a>
+</nav>
+</header>
+
+
+<main>
+    <section class="tarjeta">
+        <h2>Gestión de inventario</h2>
+        {% if mensaje %}<div class="mensaje">{{ mensaje }}</div>{% endif %}
+        {% if error %}<div class="error">{{ error }}</div>{% endif %}
+
+        <div class="formularios">
+            <form method="POST">
+                <h3>Registrar repuesto</h3>
+                <input type="hidden" name="accion" value="registrar">
+
+                <div class="campo">
+                    <label for="codigo">Código *</label>
+                    <input id="codigo" name="codigo" required maxlength="50">
+                </div>
+                <div class="campo">
+                    <label for="nombre">Nombre *</label>
+                    <input id="nombre" name="nombre" required maxlength="100">
+                </div>
+                <div class="campo">
+                    <label for="descripcion">Descripción</label>
+                    <textarea id="descripcion" name="descripcion" maxlength="255"></textarea>
+                </div>
+                <div class="campo">
+                    <label for="precio">Precio unitario *</label>
+                    <input id="precio" name="precio" type="number" min="0" step="0.01" value="0" required>
+                </div>
+                <div class="campo">
+                    <label for="stock">Existencias iniciales *</label>
+                    <input id="stock" name="stock" type="number" min="0" value="0" required>
+                </div>
+                <div class="campo">
+                    <label for="stock_minimo">Stock mínimo *</label>
+                    <input id="stock_minimo" name="stock_minimo" type="number" min="0" value="0" required>
+                </div>
+                <button type="submit">Guardar repuesto</button>
+            </form>
+
+            <form method="POST">
+                <h3>Registrar movimiento</h3>
+                <input type="hidden" name="accion" value="movimiento">
+
+                <div class="campo">
+                    <label for="id_repuesto">Repuesto *</label>
+                    <select id="id_repuesto" name="id_repuesto" required>
+                        <option value="">Selecciona un repuesto</option>
+                        {% for r in repuestos %}
+                            {% if r.estado == 'activo' %}
+                            <option value="{{ r.id_repuesto }}">{{ r.codigo }} — {{ r.nombre }} (Stock: {{ r.stock }})</option>
+                            {% endif %}
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="campo">
+                    <label for="tipo">Tipo de movimiento *</label>
+                    <select id="tipo" name="tipo" required>
+                        <option value="entrada">Entrada: sumar unidades</option>
+                        <option value="salida">Salida: restar unidades</option>
+                        <option value="ajuste">Ajuste: establecer nuevo stock</option>
+                    </select>
+                </div>
+                <div class="campo">
+                    <label for="cantidad">Cantidad *</label>
+                    <input id="cantidad" name="cantidad" type="number" min="1" required>
+                    <p class="nota">Para ajuste, escribe el stock total que debe quedar.</p>
+                </div>
+                <div class="campo">
+                    <label for="motivo">Motivo</label>
+                    <input id="motivo" name="motivo" maxlength="255" placeholder="Ej. Compra de repuestos">
+                </div>
+                <button type="submit">Registrar movimiento</button>
+            </form>
+        </div>
+    </section>
+
+    <section class="tarjeta">
+        <h2>Repuestos registrados</h2>
+        <div class="tabla">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Código</th><th>Nombre</th><th>Precio</th>
+                        <th>Stock</th><th>Stock mínimo</th><th>Estado</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for r in repuestos %}
+                    <tr>
+                        <td>{{ r.codigo }}</td>
+                        <td>{{ r.nombre }}</td>
+                        <td>${{ "{:,.2f}".format(r.precio) }}</td>
+                        <td class="{% if r.stock <= r.stock_minimo %}alerta{% endif %}">
+                            {{ r.stock }}
+                            {% if r.stock <= r.stock_minimo %} · Stock bajo{% endif %}
+                        </td>
+                        <td>{{ r.stock_minimo }}</td>
+                        <td class="{{ r.estado }}">{{ r.estado | title }}</td>
+                    </tr>
+                {% else %}
+                    <tr><td colspan="6">Todavía no hay repuestos registrados.</td></tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <section class="tarjeta">
+        <h2>Historial de movimientos</h2>
+        <div class="tabla">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Fecha</th><th>Código</th><th>Repuesto</th>
+                        <th>Tipo</th><th>Cantidad</th><th>Motivo</th><th>Usuario</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for m in movimientos %}
+                    <tr>
+                        <td>{{ m.fecha }}</td>
+                        <td>{{ m.codigo }}</td>
+                        <td>{{ m.nombre }}</td>
+                        <td>{{ m.tipo | title }}</td>
+                        <td>{{ m.cantidad }}</td>
+                        <td>{{ m.motivo or '—' }}</td>
+                        <td>{{ m.usuario or '—' }}</td>
+                    </tr>
+                {% else %}
+                    <tr><td colspan="7">Todavía no hay movimientos registrados.</td></tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </section>
+</main>
+
+<footer>TecnoTaller S.A.S. · Sistema de gestión de talleres automotrices</footer>
+</body>
+</html>

@@ -1,0 +1,249 @@
+ <!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Aceptar invitación | TecnoTaller</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 30px 16px;
+            background: #C3C9CF;
+            font-family: 'Poppins', sans-serif;
+            color: #263746;
+        }
+
+        .contenedor {
+            width: 100%;
+            max-width: 500px;
+            padding: 38px;
+            background: #FFFFFF;
+            border-radius: 25px;
+            box-shadow: 0 10px 35px rgba(31, 78, 121, 0.12);
+        }
+
+        .icono {
+            width: 65px;
+            height: 65px;
+            margin: 0 auto 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 18px;
+            background: #F5F7FA;
+            color: #1F4E79;
+            font-size: 30px;
+        }
+
+        h1 {
+            margin: 0 0 8px;
+            color: #1F4E79;
+            text-align: center;
+            font-size: 26px;
+            font-weight: 700;
+        }
+
+        .descripcion {
+            margin: 0 0 22px;
+            color: #66727D;
+            text-align: center;
+            font-size: 14px;
+            line-height: 1.7;
+        }
+
+        .informacion {
+            margin-bottom: 22px;
+            padding: 14px;
+            border-left: 4px solid #1F4E79;
+            border-radius: 8px;
+            background: #F5F7FA;
+            font-size: 13px;
+            line-height: 1.8;
+            overflow-wrap: anywhere;
+        }
+
+        .campo {
+            margin-bottom: 18px;
+        }
+
+        .campo label {
+            display: block;
+            margin-bottom: 7px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .campo input {
+            width: 100%;
+            padding: 13px 14px;
+            border: 1px solid #D5DCE3;
+            border-radius: 10px;
+            outline: none;
+            font-family: inherit;
+            font-size: 14px;
+        }
+
+        .campo input:focus {
+            border-color: #1F4E79;
+            box-shadow: 0 0 0 3px rgba(31, 78, 121, 0.10);
+        }
+
+        .ayuda {
+            display: block;
+            margin-top: 6px;
+            color: #66727D;
+            font-size: 12px;
+        }
+
+        .mensaje {
+            margin-bottom: 18px;
+            padding: 12px;
+            border-radius: 8px;
+            background: #F5F7FA;
+            color: #1F4E79;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        .boton {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 10px;
+            background: #1F4E79;
+            color: #FFFFFF;
+            font-family: inherit;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .boton:hover {
+            background: #173B5C;
+        }
+
+        .enlace {
+            margin-top: 22px;
+            text-align: center;
+            font-size: 13px;
+        }
+
+        .enlace a {
+            color: #1F4E79;
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        .enlace a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 480px) {
+            .contenedor {
+                padding: 26px 20px;
+                border-radius: 18px;
+            }
+
+            h1 {
+                font-size: 23px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <main class="contenedor">
+
+        <div class="icono" aria-hidden="true">+</div>
+
+        <h1>Completa tu registro</h1>
+
+        <p class="descripcion">
+            Tu invitación ha sido validada. Completa tus datos
+            para activar tu cuenta de TecnoTaller.
+        </p>
+
+        <div class="informacion">
+            <strong>Taller:</strong> {{ nombre_taller }}<br>
+            <strong>Correo:</strong> {{ correo }}<br>
+            <strong>Rol asignado:</strong> {{ rol }}<br>
+            <strong>Vigencia:</strong> 7 días desde la creación de la invitación.
+        </div>
+
+        {% if error %}
+            <div class="mensaje" role="alert">{{ error }}</div>
+        {% endif %}
+
+        <form method="POST"
+              action="{{ url_for('aceptar_invitacion', token=token) }}">
+
+            <div class="campo">
+                <label for="nombre">Nombre completo</label>
+                <input
+                    type="text"
+                    id="nombre"
+                    name="nombre"
+                    placeholder="Escribe tu nombre completo"
+                    maxlength="100"
+                    autocomplete="name"
+                    required>
+            </div>
+
+            <div class="campo">
+                <label for="contrasena">Crear contraseña</label>
+                <input
+                    type="password"
+                    id="contrasena"
+                    name="contrasena"
+                    placeholder="Mínimo 8 caracteres"
+                    minlength="8"
+                    autocomplete="new-password"
+                    required>
+                <small class="ayuda">
+                    Utiliza al menos 8 caracteres.
+                </small>
+            </div>
+
+            <div class="campo">
+                <label for="confirmar_contrasena">
+                    Confirmar contraseña
+                </label>
+                <input
+                    type="password"
+                    id="confirmar_contrasena"
+                    name="confirmar_contrasena"
+                    placeholder="Escribe nuevamente tu contraseña"
+                    minlength="8"
+                    autocomplete="new-password"
+                    required>
+            </div>
+
+            <button type="submit" class="boton">
+                Activar mi cuenta
+            </button>
+
+        </form>
+
+        <div class="enlace">
+            <a href="{{ url_for('login') }}">Volver al inicio de sesión</a>
+        </div>
+
+    </main>
+
+</body>
+</html>

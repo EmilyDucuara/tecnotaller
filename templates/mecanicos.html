@@ -1,0 +1,359 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mecánicos | TecnoTaller</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #C3C9CF;
+            color: #263442;
+        }
+
+        header {
+            background: #1F4E79;
+            color: white;
+            padding: 20px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        header h1 {
+            font-size: 24px;
+        }
+
+        header p, header a {
+            font-size: 13px;
+        }
+
+        header a {
+            color: white;
+        }
+
+        main {
+            max-width: 1100px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+
+        .volver {
+            display: inline-block;
+            margin-bottom: 20px;
+            color: #1F4E79;
+            font-size: 13px;
+        }
+
+        .encabezado {
+            margin-bottom: 22px;
+        }
+
+        .encabezado h2 {
+            color: #1F4E79;
+            font-size: 26px;
+        }
+
+        .encabezado p {
+            font-size: 14px;
+            margin-top: 5px;
+        }
+
+        .tarjeta {
+            background: white;
+            padding: 25px;
+            border-radius: 16px;
+            margin-bottom: 22px;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05);
+        }
+
+        .tarjeta h3 {
+            color: #1F4E79;
+            margin-bottom: 18px;
+            font-size: 19px;
+        }
+
+        .formulario {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 16px;
+        }
+
+        .campo {
+            display: flex;
+            flex-direction: column;
+            gap: 7px;
+        }
+
+        .completo {
+            grid-column: 1 / -1;
+        }
+
+        label {
+            font-size: 13px;
+            font-weight: 500;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #D5DCE3;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 14px;
+            background: white;
+        }
+
+        input:focus, select:focus {
+            outline: 2px solid #A9C4DD;
+            border-color: #1F4E79;
+        }
+
+        button {
+            border: none;
+            background: #1F4E79;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #173B5D;
+        }
+
+        .acciones {
+            margin-top: 18px;
+        }
+
+        .mensaje {
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 18px;
+            font-size: 13px;
+        }
+
+        .error {
+            background: #FCE8E6;
+            color: #9B2424;
+        }
+
+        .exito {
+            background: #E5F4E8;
+            color: #216738;
+        }
+
+        .busqueda {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 18px;
+        }
+
+        .busqueda input {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .tabla-contenedor {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+        }
+
+        th, td {
+            padding: 13px 10px;
+            border-bottom: 1px solid #E5E9ED;
+            text-align: left;
+        }
+
+        th {
+            background: #F5F7FA;
+            color: #1F4E79;
+            font-weight: 600;
+        }
+
+        .estado {
+            display: inline-block;
+            padding: 4px 9px;
+            border-radius: 20px;
+            font-size: 12px;
+        }
+
+        .activo {
+            background: #E5F4E8;
+            color: #216738;
+        }
+
+        .inactivo {
+            background: #FCE8E6;
+            color: #9B2424;
+        }
+
+        @media (max-width: 600px) {
+            .formulario {
+                grid-template-columns: 1fr;
+            }
+
+            .completo {
+                grid-column: auto;
+            }
+
+            .tarjeta {
+                padding: 18px;
+            }
+
+            .busqueda {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+       
+<div class="encabezado-marca">
+    <img src="{{ url_for('static', filename='img/logo.png') }}" alt="Logo TecnoTaller" style="width: 30px !important; height: 30px !important; object-fit: contain;">
+
+    
+</div>
+
+<div>
+    <strong>{{ session["nombre"] }}</strong><br>
+    <a href="{{ url_for('panel') }}">Volver al panel</a>
+    &nbsp;|&nbsp;
+    <a href="{{ url_for('cerrar_sesion') }}">Cerrar sesión</a>
+</div>
+</header>
+
+    </header>
+
+    <main>
+        <a class="volver" href="{{ url_for('panel') }}">
+            ← Regresar al panel principal
+        </a>
+
+        <section class="encabezado">
+            <h2>Gestión de mecánicos</h2>
+            <p>Registra y consulta el personal técnico del taller.</p>
+        </section>
+
+        {% if error %}
+            <div class="mensaje error">{{ error }}</div>
+        {% endif %}
+
+        {% if mensaje %}
+            <div class="mensaje exito">{{ mensaje }}</div>
+        {% endif %}
+
+        <section class="tarjeta">
+            <h3>Registrar nuevo mecánico</h3>
+
+            <form method="POST" action="{{ url_for('mecanicos') }}">
+                <div class="formulario">
+                    <div class="campo">
+                        <label for="nombre">Nombre completo *</label>
+                        <input type="text" id="nombre" name="nombre"
+                               maxlength="100" required>
+                    </div>
+
+                    <div class="campo">
+                        <label for="documento">Documento *</label>
+                        <input type="text" id="documento" name="documento"
+                               maxlength="30" required>
+                    </div>
+
+                    <div class="campo">
+                        <label for="telefono">Teléfono</label>
+                        <input type="text" id="telefono" name="telefono"
+                               maxlength="30">
+                    </div>
+
+                    <div class="campo">
+                        <label for="especialidad">Especialidad</label>
+                        <input type="text" id="especialidad" name="especialidad"
+                               maxlength="100"
+                               placeholder="Ej. Mecánica general">
+                    </div>
+
+                    <div class="campo completo">
+                        <label for="estado">Estado *</label>
+                        <select id="estado" name="estado" required>
+                            <option value="activo">Activo</option>
+                            <option value="inactivo">Inactivo</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="acciones">
+                    <button type="submit">Guardar mecánico</button>
+                </div>
+            </form>
+        </section>
+
+        <section class="tarjeta">
+            <h3>Mecánicos registrados</h3>
+
+            <form class="busqueda" method="GET"
+                  action="{{ url_for('mecanicos') }}">
+                <input type="search" name="buscar"
+                       value="{{ buscar }}"
+                       placeholder="Buscar por nombre, documento o especialidad"
+                       aria-label="Buscar mecánicos">
+                <button type="submit">Buscar</button>
+            </form>
+
+            <div class="tabla-contenedor">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Documento</th>
+                            <th>Teléfono</th>
+                            <th>Especialidad</th>
+                            <th>Estado</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        {% for mecanico in mecanicos %}
+                            <tr>
+                                <td>{{ mecanico.nombre }}</td>
+                                <td>{{ mecanico.documento }}</td>
+                                <td>{{ mecanico.telefono or "—" }}</td>
+                                <td>{{ mecanico.especialidad or "—" }}</td>
+                                <td>
+                                    <span class="estado {{ mecanico.estado }}">
+                                        {{ mecanico.estado|capitalize }}
+                                    </span>
+                                </td>
+                            </tr>
+                        {% else %}
+                            <tr>
+                                <td colspan="5">No hay mecánicos registrados.</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+</body>
+</html>

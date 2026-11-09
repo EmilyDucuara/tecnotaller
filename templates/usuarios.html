@@ -1,0 +1,358 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Usuarios | TecnoTaller</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #C3C9CF;
+            color: #263238;
+            padding: 30px 20px;
+        }
+
+        .contenedor {
+            max-width: 1150px;
+            margin: auto;
+        }
+
+        header {
+            background: #1F4E79;
+            color: white;
+            padding: 25px 30px;
+            border-radius: 18px;
+            margin-bottom: 25px;
+        }
+
+        header h1 {
+            font-size: 28px;
+            margin-bottom: 5px;
+        }
+
+        header p {
+            font-size: 14px;
+        }
+
+        .navegacion {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-bottom: 25px;
+        }
+
+        .boton {
+            display: inline-block;
+            padding: 11px 18px;
+            border-radius: 9px;
+            text-decoration: none;
+            font-family: inherit;
+            font-size: 14px;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+        }
+
+        .boton-principal {
+            background: #1F4E79;
+            color: white;
+        }
+
+        .boton-secundario {
+            background: white;
+            color: #1F4E79;
+        }
+
+        .seccion {
+            background: white;
+            padding: 25px;
+            border-radius: 18px;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+        }
+
+        .seccion h2 {
+            color: #1F4E79;
+            font-size: 20px;
+            margin-bottom: 8px;
+        }
+
+        .descripcion {
+            font-size: 14px;
+            color: #65727D;
+            margin-bottom: 20px;
+        }
+
+        .tabla-contenedor {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 650px;
+        }
+
+        th, td {
+            text-align: left;
+            padding: 13px 12px;
+            border-bottom: 1px solid #E4E8EC;
+            font-size: 13px;
+        }
+
+        th {
+            background: #F5F7FA;
+            color: #1F4E79;
+            font-weight: 600;
+        }
+
+        .estado {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .activo, .aceptada {
+            background: #E0F2E8;
+            color: #247447;
+        }
+
+        .pendiente {
+            background: #FFF0D6;
+            color: #8A5A00;
+        }
+
+        .inactivo, .expirada, .revocada {
+            background: #FBE4E4;
+            color: #A52A2A;
+        }
+
+        .vacio {
+            text-align: center;
+            color: #65727D;
+            padding: 25px;
+        }
+
+        .nota {
+            background: #F5F7FA;
+            border-left: 4px solid #1F4E79;
+            padding: 14px;
+            border-radius: 6px;
+            font-size: 13px;
+            line-height: 1.6;
+            margin-top: 15px;
+        }
+
+        footer {
+            text-align: center;
+            color: #4E5962;
+            font-size: 12px;
+            padding: 10px;
+        }
+
+        @media (max-width: 600px) {
+            body {
+                padding: 15px 10px;
+            }
+
+            header, .seccion {
+                padding: 20px 15px;
+            }
+
+            header h1 {
+                font-size: 23px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <main class="contenedor">
+
+        <header>
+            <h1>Gestión de usuarios</h1>
+            <p>Administra los usuarios y consulta las invitaciones de tu taller.</p>
+        </header>
+
+        <nav class="navegacion">
+            <a href="{{ url_for('panel') }}" class="boton boton-secundario">
+                ← Volver al panel
+            </a>
+
+            <a href="{{ url_for('cerrar_sesion') }}" class="boton boton-principal">
+                Cerrar sesión
+            </a>
+        </nav>
+
+          
+        <section class="seccion">
+            <h2>Invitar a un nuevo usuario</h2>
+
+            <p class="descripcion">
+                Registra el correo electrónico de la persona que deseas invitar
+                y selecciona el rol que tendrá dentro del taller.
+            </p>
+
+            <form method="POST" action="{{ url_for('crear_invitacion') }}">
+
+                <div style="margin-bottom: 18px;">
+                    <label for="correo_destino"
+                           style="display: block; margin-bottom: 7px; font-size: 14px; font-weight: 500;">
+                        Correo electrónico
+                    </label>
+
+                    <input
+                        type="email"
+                        id="correo_destino"
+                        name="correo_destino"
+                        placeholder="ejemplo@correo.com"
+                        maxlength="150"
+                        required
+                        style="width: 100%; max-width: 450px; padding: 12px; border: 1px solid #D5DCE3; border-radius: 9px; font-family: inherit;">
+                </div>
+
+                <div style="margin-bottom: 20px;">
+                    <label for="rol"
+                           style="display: block; margin-bottom: 7px; font-size: 14px; font-weight: 500;">
+                        Rol del usuario
+                    </label>
+
+                    <select
+                        id="rol"
+                        name="rol"
+                        required
+                        style="width: 100%; max-width: 450px; padding: 12px; border: 1px solid #D5DCE3; border-radius: 9px; font-family: inherit; background: white;">
+                        <option value="">Selecciona un rol</option>
+                        <option value="administrador">Administrador</option>
+                        <option value="asesor">Asesor de servicio</option>
+                        <option value="recepcionista">Recepcionista</option>
+                        <option value="mecanico">Mecánico</option>
+                    </select>
+                </div>
+
+                <button type="submit" class="boton boton-principal">
+                    Crear invitación
+                </button>
+
+            </form>
+        </section>
+
+
+        <section class="seccion">
+            <h2>Usuarios registrados</h2>
+            <p class="descripcion">
+                Personas que tienen una cuenta asociada a este taller.
+            </p>
+
+            <div class="tabla-contenedor">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Correo electrónico</th>
+                            <th>Rol</th>
+                            <th>Estado</th>
+                            <th>Fecha de creación</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        {% for usuario in usuarios %}
+                        <tr>
+                            <td>{{ usuario.nombre }}</td>
+                            <td>{{ usuario.correo }}</td>
+                            <td>{{ usuario.rol|replace('_', ' ')|title }}</td>
+                            <td>
+                                <span class="estado {{ usuario.estado }}">
+                                    {{ usuario.estado|title }}
+                                </span>
+                            </td>
+                            <td>
+                                {{ usuario.fecha_creacion.strftime('%d/%m/%Y') if usuario.fecha_creacion else '—' }}
+                            </td>
+                        </tr>
+                        {% else %}
+                        <tr>
+                            <td colspan="5" class="vacio">
+                                No hay usuarios registrados en este taller.
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section class="seccion">
+            <h2>Invitaciones</h2>
+            <p class="descripcion">
+                Consulta las invitaciones enviadas a las personas que formarán parte del taller.
+            </p>
+
+            <div class="tabla-contenedor">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Correo destinatario</th>
+                            <th>Rol asignado</th>
+                            <th>Fecha de creación</th>
+                            <th>Fecha de expiración</th>
+                            <th>Estado</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        {% for invitacion in invitaciones %}
+                        <tr>
+                            <td>{{ invitacion.correo_destino }}</td>
+                            <td>{{ invitacion.rol|replace('_', ' ')|title }}</td>
+                            <td>
+                                {{ invitacion.fecha_creacion.strftime('%d/%m/%Y') if invitacion.fecha_creacion else '—' }}
+                            </td>
+                            <td>
+                                {{ invitacion.fecha_expiracion.strftime('%d/%m/%Y') if invitacion.fecha_expiracion else '—' }}
+                            </td>
+                            <td>
+                                <span class="estado {{ invitacion.estado }}">
+                                    {{ invitacion.estado|title }}
+                                </span>
+                            </td>
+                        </tr>
+                        {% else %}
+                        <tr>
+                            <td colspan="5" class="vacio">
+                                Todavía no hay invitaciones para este taller.
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="nota">
+                <strong>Importante:</strong> por ahora esta pantalla permite consultar
+                los usuarios y las invitaciones existentes. En el siguiente paso
+                agregaremos la creación de invitaciones para que el administrador
+                pueda invitar a otros integrantes del taller.
+            </div>
+        </section>
+
+        <footer>
+            TecnoTaller S.A.S. — Gestión de talleres automotrices
+        </footer>
+
+    </main>
+</body>
+</html>

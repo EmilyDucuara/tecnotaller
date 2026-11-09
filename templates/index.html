@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>TecnoTaller | Gestión inteligente para talleres automotrices</title>
+
+    <!-- Fuente Poppins -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Iconos -->
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+
+    <!-- ================= HEADER ================= -->
+    <header class="header">
+        <nav class="navbar">
+
+            <a href="#inicio" class="logo">
+                <img src="{{ url_for('static', filename='img/logo.png') }}" alt="Logo TecnoTaller">
+            </a>
+
+            <button class="menu-btn" id="menu-btn" aria-label="Abrir menú">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+
+            <ul class="nav-links" id="nav-links">
+                <li><a href="#inicio" class="activo">Inicio</a></li>
+                <li><a href="#solucion">Solución</a></li>
+                <li><a href="#funcionalidades">Funcionalidades</a></li>
+                <li><a href="#aplicacion">Aplicación</a></li>
+                <li><a href="#nosotros">Nosotros</a></li>
+                <li><a href="#contacto">Contacto</a></li>
+            </ul>
+
+            <a href="#contacto" class="btn-header">
+                Conoce TecnoTaller
+            </a>
+
+    <a href="{{ url_for('login') }}" class="btn-login">
+    Iniciar sesión
+</a>
+
+<a href="{{ url_for('registro') }}" class="btn-registro">
+    Registrarse
+</a>
+    
+        </nav>
+    </header>
+
+
+    <main>
+
+        <!-- ================= INICIO ================= -->
+        <section class="hero" id="inicio">
+
+            <div class="hero-contenido">
+
+                <div class="hero-texto">
+
+                    <span class="etiqueta">
+                        <i class="fa-solid fa-screwdriver-wrench"></i>
+                        Solución para talleres automotrices
+                    </span>
+
+                    <h1>
+                        La tecnología que
+                        <span>impulsa tu taller</span>
+                    </h1>
+
+                    <p>
+                        TecnoTaller es una solución diseñada para ayudar a los
+                        talleres automotrices a organizar, gestionar y mejorar
+                        sus procesos desde un solo lugar.
+                    </p>
+
+                    <div class="hero-botones">
+                        <a href="#solucion" class="btn-principal">
+                            Conoce nuestra solución
+                            <i class="fa-solid fa-arrow-right"></i>
+                        </a>
+
+                        <a href="#aplicacion" class="btn-secundario">
+                            Ver la aplicación
+                        </a>
+                    </div>
+
+                    <div class="hero-beneficios">
+                        <div>
+                            <i class="fa-solid fa-car"></i>
+                            <span>Mayor control</span>
+                        </div>
+
+                        <div>
+                            <i class="fa-solid fa-calendar-check"></i>
+                            <span>Mejor organización</span>
+                        </div>
+
+                        <div>
+                            <i class="fa-solid fa-users"></i>
+                            <span>Mejor atención</span>
+                        </div>
+                    </div>
+
+                </div>
+
+
+                <div class="hero-visual">
+
+                    <div class="fondo-visual"></div>
+
+                    <div class="icono-central">
+                        <i class="fa-solid fa-screwdriver-wrench"></i>
+                    </div>
+
+                    <div class="panel panel-uno">
+                        <i class="fa-solid fa-users"></i>
+                        <div>
+                            <strong>Clientes</strong>
+                            <span>Información organizada</span>
+                        </div>
+                    </div>
+
+                    <div class="panel panel-dos">
+                        <i class="fa-solid fa-car-side"></i>
+                        <div>
+                            <strong>Vehículos</strong>
+                            <span>Control y seguimiento</span>
+                        </div>
+                    </div>
+
+                    <div class="panel panel-tres">
+                        <i class="fa-solid fa-calendar-check"></i>
+                        <div>
+                            <strong>Citas</strong>
+                            <span>Agenda organizada</span>
+                        </div>
+                    </div>
+
+                    <div class="panel-resumen">
+                        <h3>Resumen del taller</h3>
+
+                        <div class="resumen-item">
+                            <i class="fa-solid fa-clipboard-list"></i>
+                            <span>Servicios registrados</span>
+                            <strong>24</strong>
+                        </div>
+
+                        <div class="resumen-item">
+                            <i class="fa-solid fa-calendar-days"></i>
+                            <span>Citas programadas</span>
+                            <strong>12</strong>
+                        </div>
+
+                        <div class="resumen-item">
+                            <i class="fa-solid fa-users"></i>
+                            <span>Clientes</span>
+                            <strong>156</strong>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ================= PROBLEMAS ================= -->
+        <section class="problemas" id="problemas">
+
+        </section>
+
+            <div class="contenedor">
+
+                <div class="titulo-seccion">
+                    <span>IDENTIFICAMOS LAS NECESIDADES</span>
+                    <h2>¿Tu taller enfrenta estos problemas?</h2>
+                    <p>
+                        Sabemos que gestionar un taller puede ser más complicado
+                        cuando la información se encuentra dispersa y los procesos
+                        se realizan de forma manual.
+                    </p>
+                </div>
+
+                <div class="grid-problemas">
+
+                    <article class="card-problema">
+                        <div class="icono-card">
+                            <i class="fa-solid fa-folder-open"></i>
+                        </div>
+
+                        <h3>Información desorganizada</h3>
+
+                        <p>
+                            Los datos de clientes, vehículos y servicios pueden
+                            encontrarse en diferentes lugares.
+                        </p>
+                    </article>
+
+
+                    <article class="card-problema">
+                        <div class="icono-card">
+                            <i class="fa-solid fa-calendar-xmark"></i>
+                        </div>
+
+                        <h3>Dificultad para agendar</h3>
+
+                        <p>
+                            Llevar el control de las citas y servicios programados
+                            puede resultar complicado.
+                        </p>
+                    </article>
+
+
+                    <article class="card-problema">
+                        <div class="icono-card">
+                            <i class="fa-solid fa-clipboard"></i>
+                        </div>
+
+                        <h3>Seguimiento manual</h3>
+
+                        <p>
+                            Consultar el historial y el estado de los servicios
+                            puede consumir tiempo.
+                        </p>
+                    </article>
+
+
+                    <article class="card-problema">
+                        <div class="icono-card">
+                            <i class="fa-solid fa-chart-column"></i>
+                        </div>
+
+                        <h3>Falta de información</h3>
+
+                        <p>
+                            No contar con datos organizados dificulta tomar mejores
+                            decisiones para el taller.
+                        </p>
+                    </article>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ================= SOLUCIÓN ================= -->
+        <section class="solucion" id="solucion">
+
+            <div class="contenedor solucion-contenedor">
+
+                <div class="solucion-texto">
+
+                    <span class="etiqueta-seccion">
+                        NUESTRA SOLUCIÓN
+                    </span>
+
+                    <h2>
+                        Todo lo que tu taller necesita,
+                        <span>en un solo lugar.</span>
+                    </h2>
+
+                    <p>
+                        TecnoTaller busca facilitar la gestión diaria del taller
+                        mediante una herramienta que permita organizar los procesos
+                        más importantes de forma sencilla.
+                    </p>
+
+                    <a href="#funcionalidades" class="btn-principal">
+                        Ver funcionalidades
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </a>
+
+                </div>
+
+
+                <div class="solucion-imagen">
+
+                    <div class="circulo-solucion"></div>
+
+                    <div class="solucion-icono">
+                        <i class="fa-solid fa-gears"></i>
+                    </div>
+
+                    <div class="solucion-lista">
+
+                        <div>
+                            <i class="fa-solid fa-check"></i>
+                            Gestión organizada
+                        </div>
+
+                        <div>
+                            <i class="fa-solid fa-check"></i>
+                            Información centralizada
+                        </div>
+
+                        <div>
+                            <i class="fa-solid fa-check"></i>
+                            Mayor control
+                        </div>
+
+                        <div>
+                            <i class="fa-solid fa-check"></i>
+                            Procesos más eficientes
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ================= FUNCIONALIDADES ================= -->
+        <section class="funcionalidades" id="funcionalidades">
+
+            <div class="contenedor">
+
+                <div class="titulo-seccion centro">
+                    <span>FUNCIONALIDADES</span>
+                    <h2>Una solución diseñada para tu taller</h2>
+                    <p>
+                        Conoce algunas de las herramientas que forman parte de
+                        TecnoTaller.
+                    </p>
+                </div>
+
+
+                <div class="grid-funcionalidades">
+
+                    <article class="card-funcionalidad">
+                        <i class="fa-solid fa-users"></i>
+                        <h3>Gestión de clientes</h3>
+                        <p>
+                            Organiza y consulta la información de los clientes
+                            de tu taller.
+                        </p>
+                    </article>
+
+                    <article class="card-funcionalidad">
+                        <i class="fa-solid fa-car"></i>
+                        <h3>Gestión de vehículos</h3>
+                        <p>
+                            Mantén organizada la información de los vehículos
+                            atendidos.
+                        </p>
+                    </article>
+
+                    <article class="card-funcionalidad">
+                        <i class="fa-solid fa-file-lines"></i>
+                        <h3>Órdenes de servicio</h3>
+                        <p>
+                            Consulta y lleva un mejor control de los trabajos
+                            realizados.
+                        </p>
+                    </article>
+
+                    <article class="card-funcionalidad">
+                        <i class="fa-solid fa-calendar-days"></i>
+                        <h3>Agenda de citas</h3>
+                        <p>
+                            Organiza las citas y servicios programados de forma
+                            sencilla.
+                        </p>
+                    </article>
+
+                    <article class="card-funcionalidad">
+                        <i class="fa-solid fa-chart-line"></i>
+                        <h3>Reportes</h3>
+                        <p>
+                            Consulta información que ayude a conocer mejor el
+                            funcionamiento del taller.
+                        </p>
+                    </article>
+
+                    <article class="card-funcionalidad">
+                        <i class="fa-solid fa-shield-halved"></i>
+                        <h3>Información segura</h3>
+                        <p>
+                            Mantén los datos importantes del taller organizados
+                            dentro de la solución.
+                        </p>
+                    </article>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ================= APLICACIÓN ================= -->
+        <section class="aplicacion" id="aplicacion">
+
+            <div class="contenedor">
+
+                <div class="app-superior">
+
+                    <div>
+                        <span class="etiqueta-seccion">
+                            CONOCE TECNOTALLER
+                        </span>
+
+                        <h2>
+                            Una aplicación pensada para
+                            <span>facilitar tu trabajo.</span>
+                        </h2>
+                    </div>
+
+                    <p>
+                        Una interfaz moderna y organizada, diseñada pensando en
+                        las necesidades principales de la gestión de un taller
+                        automotriz.
+                    </p>
+
+                </div>
+
+
+                <div class="pantallas">
+
+                    <div class="telefono">
+                        <div class="notch"></div>
+
+                        <div class="pantalla-app">
+                            <div class="app-header">
+                                <span>Inicio</span>
+                                <i class="fa-solid fa-bell"></i>
+                            </div>
+
+                            <div class="app-bienvenida">
+                                <small>Bienvenido</small>
+                                <h4>Resumen del taller</h4>
+                            </div>
+
+                            <div class="app-cajas">
+                                <div>
+                                    <i class="fa-solid fa-calendar"></i>
+                                    <strong>12</strong>
+                                    <span>Citas</span>
+                                </div>
+
+                                <div>
+                                    <i class="fa-solid fa-car"></i>
+                                    <strong>24</strong>
+                                    <span>Servicios</span>
+                                </div>
+                            </div>
+
+                            <div class="app-lista">
+                                <p>Actividad reciente</p>
+                                <div></div>
+                                <div></div>
+                                <div></div>
+                            </div>
+                        </div>
+
+                        <span class="nombre-pantalla">Inicio</span>
+                    </div>
+
+
+                    <div class="telefono">
+                        <div class="notch"></div>
+
+                        <div class="pantalla-app">
+                            <div class="app-header">
+                                <span>Clientes</span>
+                                <i class="fa-solid fa-magnifying-glass"></i>
+                            </div>
+
+                            <div class="buscador">
+                                <i class="fa-solid fa-search"></i>
+                                Buscar cliente...
+                            </div>
+
+                            <div class="clientes-lista">
+                                <div><i class="fa-solid fa-user"></i> Juan Pérez</div>
+                                <div><i class="fa-solid fa-user"></i> María López</div>
+                                <div><i class="fa-solid fa-user"></i> Carlos Gómez</div>
+                                <div><i class="fa-solid fa-user"></i> Andrea Ramírez</div>
+                            </div>
+                        </div>
+
+                        <span class="nombre-pantalla">Clientes</span>
+                    </div>
+
+
+                    <div class="telefono">
+                        <div class="notch"></div>
+
+                        <div class="pantalla-app">
+                            <div class="app-header">
+                                <span>Vehículos</span>
+                                <i class="fa-solid fa-plus"></i>
+                            </div>
+
+                            <div class="buscador">
+                                <i class="fa-solid fa-search"></i>
+                                Buscar vehículo...
+                            </div>
+
+                            <div class="clientes-lista">
+                                <div><i class="fa-solid fa-car"></i> Mazda 3</div>
+                                <div><i class="fa-solid fa-car"></i> Chevrolet Spark</div>
+                                <div><i class="fa-solid fa-car"></i> Toyota Corolla</div>
+                                <div><i class="fa-solid fa-car"></i> Kia Picanto</div>
+                            </div>
+                        </div>
+
+                        <span class="nombre-pantalla">Vehículos</span>
+                    </div>
+
+
+                    <div class="telefono">
+                        <div class="notch"></div>
+
+                        <div class="pantalla-app">
+                            <div class="app-header">
+                                <span>Servicio</span>
+                                <i class="fa-solid fa-ellipsis-vertical"></i>
+                            </div>
+
+                            <div class="detalle-servicio">
+                                <small>Detalle de la orden</small>
+
+                                <div>
+                                    <span>Cliente</span>
+                                    <strong>Juan Pérez</strong>
+                                </div>
+
+                                <div>
+                                    <span>Vehículo</span>
+                                    <strong>Mazda 3</strong>
+                                </div>
+
+                                <div>
+                                    <span>Estado</span>
+                                    <strong>En proceso</strong>
+                                </div>
+
+                                <button>Actualizar estado</button>
+                            </div>
+                        </div>
+
+                        <span class="nombre-pantalla">Servicios</span>
+                    </div>
+
+
+                    <div class="telefono">
+                        <div class="notch"></div>
+
+                        <div class="pantalla-app">
+                            <div class="app-header">
+                                <span>Agenda</span>
+                                <i class="fa-solid fa-calendar"></i>
+                            </div>
+
+                            <div class="mini-calendario">
+                                <strong>Agosto 2026</strong>
+                                <div class="dias">
+                                    <span>L</span>
+                                    <span>M</span>
+                                    <span>M</span>
+                                    <span>J</span>
+                                    <span>V</span>
+                                    <span>S</span>
+                                    <span>D</span>
+                                </div>
+
+                                <div class="numeros">
+                                    <span>1</span>
+                                    <span>2</span>
+                                    <span>3</span>
+                                    <span>4</span>
+                                    <span>5</span>
+                                    <span class="dia-activo">6</span>
+                                    <span>7</span>
+                                    <span>8</span>
+                                    <span>9</span>
+                                    <span>10</span>
+                                    <span>11</span>
+                                    <span>12</span>
+                                </div>
+                            </div>
+
+                            <div class="cita-mini">
+                                <strong>10:00 AM</strong>
+                                <span>Servicio programado</span>
+                            </div>
+                        </div>
+
+                        <span class="nombre-pantalla">Agenda</span>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ================= BENEFICIOS ================= -->
+        <section class="beneficios">
+
+            <div class="contenedor">
+
+                <div class="titulo-seccion centro">
+                    <span>BENEFICIOS</span>
+                    <h2>¿Por qué elegir TecnoTaller?</h2>
+                </div>
+
+                <div class="beneficios-grid">
+
+                    <div>
+                        <i class="fa-solid fa-clock"></i>
+                        <h3>Ahorra tiempo</h3>
+                        <p>Facilita la gestión de los procesos diarios.</p>
+                    </div>
+
+                    <div>
+                        <i class="fa-solid fa-folder"></i>
+                        <h3>Mayor organización</h3>
+                        <p>Información importante reunida en un solo lugar.</p>
+                    </div>
+
+                    <div>
+                        <i class="fa-solid fa-handshake"></i>
+                        <h3>Mejor atención</h3>
+                        <p>Accede rápidamente a la información necesaria.</p>
+                    </div>
+
+                    <div>
+                        <i class="fa-solid fa-chart-pie"></i>
+                        <h3>Mejores decisiones</h3>
+                        <p>Información organizada para apoyar la gestión.</p>
+                    </div>
+
+                    <div>
+                        <i class="fa-solid fa-arrow-trend-up"></i>
+                        <h3>Pensado para crecer</h3>
+                        <p>Una solución enfocada en las necesidades del taller.</p>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ================= NOSOTROS ================= -->
+        <section class="nosotros" id="nosotros">
+
+            <div class="contenedor nosotros-contenedor">
+
+                <div class="nosotros-info">
+
+                    <span class="etiqueta-seccion">
+                        SOBRE NOSOTROS
+                    </span>
+
+                    <h2>¿Quiénes somos?</h2>
+
+                    <p>
+                        Somos un proyecto enfocado en desarrollar una solución
+                        tecnológica que ayude a los talleres automotrices a mejorar
+                        la organización y gestión de sus procesos.
+                    </p>
+
+                    <p>
+                        Nuestro objetivo es ofrecer una herramienta moderna,
+                        sencilla y pensada para facilitar el trabajo diario,
+                        aprovechando la tecnología como apoyo para el crecimiento
+                        de los talleres.
+                    </p>
+
+                    <a href="#contacto" class="btn-principal">
+                        Conoce más sobre nosotros
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </a>
+
+                </div>
+
+
+                <div class="nosotros-estadisticas">
+
+                    <div class="estadistica">
+                        <i class="fa-solid fa-screwdriver-wrench"></i>
+                        <div>
+                            <strong>Gestión</strong>
+                            <span>Organización de procesos del taller</span>
+                        </div>
+                    </div>
+
+                    <div class="estadistica">
+                        <i class="fa-solid fa-headset"></i>
+                        <div>
+                            <strong>Soporte</strong>
+                            <span>Una solución pensada para sus usuarios</span>
+                        </div>
+                    </div>
+
+                    <div class="estadistica">
+                        <i class="fa-solid fa-rotate"></i>
+                        <div>
+                            <strong>Innovación</strong>
+                            <span>Mejora continua de la solución</span>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ================= CONTACTO / CTA ================= -->
+        <section class="cta" id="contacto">
+
+            <div class="contenedor cta-contenedor">
+
+                <div>
+                    <span>EL SIGUIENTE PASO PARA TU TALLER</span>
+                    <h2>Tu taller está listo para avanzar con la tecnología.</h2>
+
+                    <p>
+                        Descubre cómo TecnoTaller puede ayudar a organizar y
+                        facilitar la gestión de los procesos de tu taller.
+                    </p>
+                </div>
+
+                <a href="#inicio" class="btn-blanco">
+                    Conoce TecnoTaller
+                    <i class="fa-solid fa-arrow-up"></i>
+                </a>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- ================= FOOTER ================= -->
+    <footer class="footer">
+
+        <div class="contenedor footer-contenido">
+
+            <div class="footer-logo">
+                <img src="{{ url_for('static', filename='img/logo.png') }}" alt="Logo TecnoTaller">
+            </div>
+
+            <div class="footer-enlaces">
+                <a href="#inicio">Inicio</a>
+                <a href="#solucion">Solución</a>
+                <a href="#funcionalidades">Funcionalidades</a>
+                <a href="#aplicacion">Aplicación</a>
+                <a href="#nosotros">Nosotros</a>
+            </div>
+
+            <div class="footer-redes">
+                <a href="#inicio"><i class="fa-brands fa-facebook-f"></i></a>
+                <a href="#inicio"><i class="fa-brands fa-instagram"></i></a>
+                <a href="#inicio"><i class="fa-brands fa-whatsapp"></i></a>
+            </div>
+
+        </div>
+
+        <div class="footer-final">
+            <p>© 2026 TecnoTaller | Proyecto académico</p>
+        </div>
+
+    </footer>
+
+
+    <!-- JavaScript -->
+   <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+
+</body>
+</html>
